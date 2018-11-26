@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="col-sm-4">
+		<div class="media profile-square">
+			<% unless @user.avatar.url == nil %>
+    		<%= image_tag @user.avatar.url, class: "img-circle img-responsive" %>
+    	<% end %>
+			<h2><%= @user.name %></h2>
+			<h4 class="text-muted">@<%= @user.username %></h4>
+			<p><%= @user.location %></p>
+			<p><%= @user.bio %></p>
+		</div>
+	</div>
+
+	<div class="col-sm-7 col-sm-offset-1">
+		<div class="navbar navbar-default">
+			<ul class="nav navbar-nav">
+				<li class="active"><%= link_to "#{@user.tweets.count} Tweets", show_user_path(id: @user.id) %></li>
+				<li><%= link_to "#{@following_count} Following", following_path(id: @user.id) %></li>
+				<li><%= link_to "#{@followers_count} Followers", followers_path(id: @user.id) %></li>
+			</ul>
+			<div class="container-fluid">
+			<ul class="nav navbar-nav navbar-right">
+				<% if user_signed_in? %>
+					<% if current_user.following.include?(@user.id) %>
+						<li><%= link_to "Following", unfollow_path(id: @user.id), class: "unfollow_tab" %></li>
+					<% else %>
+						<% if current_user.id != @user.id %>
+							<li><%= link_to "Follow", now_following_path(id: @user.id) %></li>
+						<% end %>
+					<% end %>
+				<% end %>
+			</ul>
+		</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-12">
+
+				<% @user.tweets.order(created_at: :desc).each do |tweet| %>
+					<%= render 'a_tweet', tweet: tweet %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

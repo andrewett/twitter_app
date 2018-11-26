@@ -1,0 +1,18 @@
+<div class="media">
+	<% if tweet.user.avatar.blank? == false %>
+    <div class="media-left">
+    	<%= image_tag tweet.user.avatar.url, class: "media-object", size: 40 %>
+    </div>
+  <% end %>
+	<div class="media-body"> 
+		<h5 class="media-heading">
+			<%= link_to tweet.user.name, show_user_path(id: tweet.user_id) %>
+			<span class="text-muted">
+				@<%= tweet.user.username %>
+				• <%= time_ago_in_words(tweet.created_at) if Time.now - tweet.created_at < 86400 %>
+				<%= tweet.created_at.strftime('%b %e') if Time.now - tweet.created_at >= 86400 %>
+			</span>
+		</h5>
+		<p><%= tweet.message.html_safe %></p>
+	</div>
+</div>

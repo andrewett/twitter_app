@@ -1,0 +1,11 @@
+<div class="jumbotron">
+	<h1><%= @tag.phrase %></h1>
+</div>
+
+<div class="row">
+	<div class="col-md-8 col-md-offset-2">
+		<% @tag.tweets.order(created_at: :desc).each do |tweet| %>
+			<%= render 'a_tweet', tweet: tweet %>
+		<% end %>
+	</div>
+</div>

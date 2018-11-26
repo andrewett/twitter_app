@@ -1,0 +1,39 @@
+<div class="row">
+  <!-- Profile on side of feed -->
+  <div class="col-md-4">
+    <div class="media profile-square">
+    	<% unless current_user.avatar.url == nil %>
+    		<%= image_tag current_user.avatar.url, class: "img-circle img-responsive" %>
+    	<% end %>
+    	<%= link_to show_user_path(id: current_user.id) do %>
+    	<h2><%= current_user.name %></h2>
+      <h3>@<%= current_user.username %></h3>
+      <% end %>
+      <div class="btn-group btn-group-sm" role="group">
+        <%= link_to "#{current_user.tweets.count} Tweets", show_user_path(id: current_user.id), class: "btn btn-primary" %>
+        <%= link_to "#{@following_count} Following", following_path(id: current_user.id), class: "btn btn-primary" %>
+        <%= link_to "#{@followers_count} Followers", followers_path(id: current_user.id), class: "btn btn-primary" %>
+      </div>
+    </div>
+    <div class="media profile-square">
+      <h2>Trending</h2>
+      <div class="btn-group" role="group">
+        <% @trending.each do |tag| %>
+          <%= link_to tag.phrase, tag_tweets_path(id: tag.id), class: "btn btn-primary btn-block" %>
+        <% end%>
+      </div>
+      <h2>Top Tweeter</h2>
+      <%= link_to "@#{@top_tweeter.username}", show_user_path(id: @top_tweeter.id), class: "btn btn-primary btn-block" %>
+
+    </div>
+  </div><!--/end profile on side of feed -->
+  <!-- Twitter Feed -->
+  <div class="col-md-6 col-md-offset-1">
+    <%= render 'tweets/form', tweet: @tweet %>
+    <% @following_tweets.each do |tweet| %>
+			<%= render 'a_tweet', tweet: tweet %>
+		<% end %>
+  </div><!--/end twitter feed -->
+</div>
+
+
